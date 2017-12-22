@@ -9,7 +9,9 @@
  * Log for errors.
  */
 const { error, log } = console;
-const logic = require('./logic');
+const { importData } = require('./logic');
+
+const Bucket = process.env.AWS_S3_BUCKET;
 
 /**
  * Function that will be used in the serverless file and will be send as a lambda function,
@@ -24,10 +26,10 @@ module.exports.producer = (event, context, callback) => {
     try {
 
         const body = {
-            Bucket: event.bucket,
+            Bucket,
             Key: event.key
         };
-        logic.readData(body, function (err, data) {
+        importData(body, function (err, data) {
 
             if (err) {
 
@@ -35,7 +37,7 @@ module.exports.producer = (event, context, callback) => {
                 return callback(err, null);
 
             }
-            log('Data saved succesfully', data);
+            log('Answer: ', data);
             return callback(null, data);
 
         });
