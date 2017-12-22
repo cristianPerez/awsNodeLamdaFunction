@@ -1,0 +1,28 @@
+{
+  "name": "node-imports-lambda",
+  "version": "1.0.0",
+  "description": "there are three functions for work with imports project, and Amazon SQS, 1) lambda producer, 2) lambda consumer, 3) lambda worker for save in the db.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/cperez354/node-imports-lambda.git"
+  },
+  "keywords": [
+    "Lambda"
+  ],
+  "author": "SEE AUTHORS IN AUTHORS.md",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://gitlab.com/cperez354/node-imports-lambda/issues"
+  },
+  "homepage": "https://gitlab.com/cperez354/node-imports-lambda#README",
+  "dependencies": {
+    "@enspire/eslint-config-enspire": "^1.1.1",
+    "aws-sdk": "^2.174.0",
+    "eslint": "^4.13.1",
+    "serverless": "^1.25.0"
+  }
+}
