@@ -1,27 +1,17 @@
 # serverless.yml
 
-service: imports
+service: lambdaimports
 
 provider:
   name: aws
   role: arn:aws:iam::084187035577:role/serverlessadmin
   runtime: nodejs6.10
   timeout: 300
-  environment:
-    AWS_S3_BUCKET: envistasecure
-    CUSTOMER_NAME: envistawine
-  iamRoleStatements:
-    - Effect: Allow
-      Action: # Gives permission to DynamoDB tables in a specific region
-        - s3:GetBucketLocation
-        - s3:ListBucket
-        - s3:GetObject
-        - s3:GetObject
-        - s3:PutObject
-        - s3:DeleteObject
-      Resource: "arn:aws:s3:::envistasecure"
 
 functions:
   producerImports:
     handler: src/producer/handler.producer
     description: read imports from s3 csv file.
+    environment:
+      AWS_S3_BUCKET: envistasecure
+      AWS_QUEUE_NAME: importsqueue
