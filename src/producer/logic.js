@@ -27,8 +27,9 @@ exports.importData = function (body, callback) {
                 return callback(err, null);
 
             }
-            log(`the SQS was created::: ${JSON.stringify(data)}`);
+
             let urlQueue = data.QueueUrl;
+            log(`the SQS was created::: ${urlQueue}`);
 
             getS3Data(body, urlQueue, function (err, data) {
 

@@ -2,7 +2,7 @@
 
 const aws = require('aws-sdk');
 const sqs = new aws.SQS();
-const { mapSeries } = require('async');
+const { whilst } = require('async');
 
 const { log, error } = console;
 
@@ -25,7 +25,6 @@ const createQueue = function (nameQueue, callback) {
                 return callback(err, null);
 
             }
-            log(`The queue was created: ${JSON.stringify(data)}`);
             return callback(null, data);
 
         });
@@ -79,25 +78,37 @@ const sendBatch = function (messages, queueUrl, callback) {
 
         let rightMessage = [];
         let errorsMessages = [];
-        mapSeries(messages, function (message, callbackMapSeries) {
+        let page = 0;
+        let nextPage = messages.length;
 
-            log(`sending message: ${message.email}`);
-            sendMessage(JSON.stringify(message), queueUrl, function (err, data) {
+        whilst(function () {
+
+            //return messages.length > 0;
+            return page < nextPage;
+
+        },
+        function (next) {
+
+            //let auxiliarArray = messages.splice(0, 100);
+            let auxiliarArray = messages.slice(page, 100);
+
+            sendMessage(JSON.stringify(auxiliarArray), queueUrl, function (err, data) {
 
                 if (err) {
 
-                    error('Error during sent the mesage: %s error: %s', message, err.message);
-                    //return callback(err, null);
-                    errorsMessages.push({ message, answer: data });
+                    error('Error during sent the mesage: %s error: %s', auxiliarArray, err.message);
+                    errorsMessages.push({ auxiliarArray, answer: data });
 
                 }
-                log('Message sent: %s', data);
-                rightMessage.push({ message, answer: data });
-                return callbackMapSeries(null, data);
+                log('Message sent mesageId: %s', data.MessageId);
+                rightMessage.push({ message: auxiliarArray, answer: data });
+                page = page + 100;
+                next();
 
             });
 
-        }, function (err, data) {
+        },
+        function (err) {
 
             if (err) {
 
@@ -105,7 +116,7 @@ const sendBatch = function (messages, queueUrl, callback) {
                 return callback(err, null);
 
             }
-            log('Final data from map Series: %s', data);
+            log('Final data from whilst: %s');
             return callback(null, {
                 rightMessage,
                 errorsMessages
