@@ -29,7 +29,7 @@ module.exports.producer = (event, context, callback) => {
             Bucket,
             Key: event.key
         };
-        importData(body, function (err, data) {
+        importData(body, (err, data) => {
 
             if (err) {
 

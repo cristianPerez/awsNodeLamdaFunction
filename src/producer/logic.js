@@ -5,21 +5,21 @@
 
 'use strict';
 
-const sqsHelper = require('./helpers/sqshelper');
-const { getS3Data } = require('./helpers/s3helper');
+const sqsHelper = require('../helpers/sqshelper');
+const { getS3Data } = require('../helpers/s3helper');
 const { log, error } = console;
 
 /**
- * Delete the database if exists and create a new one that contains the information brought from the "done" function.
+ * Create a sqs id it doesn't exist after import data from s3 csv file and send the messages to the sqs.
  * @param {parameter} body - Request body.
  * @param {parameter} callback - return the process.
  */
 
-exports.importData = function (body, callback) {
+exports.importData = (body, callback) => {
 
     try {
 
-        sqsHelper.createQueue(process.env.AWS_QUEUE_NAME, function (err, data) {
+        sqsHelper.createQueue(process.env.AWS_QUEUE_NAME, (err, data) => {
 
             if (err) {
 
@@ -31,7 +31,7 @@ exports.importData = function (body, callback) {
             let urlQueue = data.QueueUrl;
             log(`the SQS was created::: ${urlQueue}`);
 
-            getS3Data(body, urlQueue, function (err, data) {
+            getS3Data(body, urlQueue, (err, data) => {
 
                 if (err) {
 
@@ -41,7 +41,7 @@ exports.importData = function (body, callback) {
                 }
                 let metaData = data;
                 log(`METADATA :: ${metaData.messages.length}`);
-                sqsHelper.sendBatch(metaData.messages, urlQueue, function (err, data) {
+                sqsHelper.sendBatch(metaData.messages, urlQueue, (err, data) => {
 
                     if (err) {
 

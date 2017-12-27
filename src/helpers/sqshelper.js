@@ -6,7 +6,7 @@ const { whilst } = require('async');
 
 const { log, error } = console;
 
-const createQueue = function (nameQueue, callback) {
+const createQueue = (nameQueue, callback) => {
 
     try {
 
@@ -17,7 +17,7 @@ const createQueue = function (nameQueue, callback) {
             }
         };
 
-        sqs.createQueue(params, function (err, data) {
+        sqs.createQueue(params, (err, data) => {
 
             if (err) {
 
@@ -38,7 +38,7 @@ const createQueue = function (nameQueue, callback) {
 
 };
 
-const sendMessage = function (messaje, queueUrl, callback) {
+const sendMessage = (messaje, queueUrl, callback) => {
 
     try {
 
@@ -48,7 +48,7 @@ const sendMessage = function (messaje, queueUrl, callback) {
             DelaySeconds: 0
         };
 
-        sqs.sendMessage(params, function (err, data) {
+        sqs.sendMessage(params, (err, data) => {
 
             if (err) {
 
@@ -72,7 +72,7 @@ const sendMessage = function (messaje, queueUrl, callback) {
 
 };
 
-const sendBatch = function (messages, queueUrl, callback) {
+const sendBatch = (messages, queueUrl, callback) => {
 
     try {
 
@@ -81,18 +81,18 @@ const sendBatch = function (messages, queueUrl, callback) {
         let page = 0;
         let nextPage = messages.length;
 
-        whilst(function () {
+        whilst(() => {
 
             //return messages.length > 0;
             return page < nextPage;
 
         },
-        function (next) {
+        (next) => {
 
             //let auxiliarArray = messages.splice(0, 100);
             let auxiliarArray = messages.slice(page, 100);
 
-            sendMessage(JSON.stringify(auxiliarArray), queueUrl, function (err, data) {
+            sendMessage(JSON.stringify(auxiliarArray), queueUrl, (err, data) => {
 
                 if (err) {
 
@@ -108,7 +108,7 @@ const sendBatch = function (messages, queueUrl, callback) {
             });
 
         },
-        function (err) {
+        (err) => {
 
             if (err) {
 
@@ -116,7 +116,7 @@ const sendBatch = function (messages, queueUrl, callback) {
                 return callback(err, null);
 
             }
-            log('Final data from whilst: %s');
+            log('Final data from whilst');
             return callback(null, {
                 rightMessage,
                 errorsMessages

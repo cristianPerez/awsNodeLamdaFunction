@@ -7,9 +7,9 @@ const aws = require('aws-sdk');
 const parse = require('csv-parse');
 const s3 = new aws.S3();
 
-const { log, error } = console;
+const { error } = console;
 
-exports.getS3Data = function (body, urlQueue, callback) {
+exports.getS3Data = (body, urlQueue, callback) => {
 
     const answer = {
         response: {
@@ -21,7 +21,7 @@ exports.getS3Data = function (body, urlQueue, callback) {
         }
     };
 
-    const parser = parse({ delimiter: ';', columns: true }, function (err, data) {
+    const parser = parse({ delimiter: ';', columns: true }, (err, data) => {
 
         if (err) {
 
