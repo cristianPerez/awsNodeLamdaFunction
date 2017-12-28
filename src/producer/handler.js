@@ -27,7 +27,7 @@ module.exports.producer = (event, context, callback) => {
 
         const body = {
             Bucket,
-            Key: event.key
+            Key: event.Records[0].s3.object.key
         };
         importData(body, (err, data) => {
 

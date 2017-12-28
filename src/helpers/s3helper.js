@@ -9,6 +9,12 @@ const s3 = new aws.S3();
 
 const { error } = console;
 
+/**
+ * Function using for get data from s3 and process in sqs.
+ * @param {object} body - Constains the key -> name of file and bucket.
+ * @param {string} urlQueue - Url of the sqs service.
+ * @param {function} callback - Return information to the caller, otherwise return value is null.
+ */
 exports.getS3Data = (body, urlQueue, callback) => {
 
     const answer = {

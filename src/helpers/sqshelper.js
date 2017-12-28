@@ -6,38 +6,6 @@ const { whilst } = require('async');
 
 const { log, error } = console;
 
-const createQueue = (nameQueue, callback) => {
-
-    try {
-
-        const params = {
-            QueueName: nameQueue,
-            Attributes: {
-                VisibilityTimeout: '60'
-            }
-        };
-
-        sqs.createQueue(params, (err, data) => {
-
-            if (err) {
-
-                error('Error creating the SQS: %s', err.message);
-                return callback(err, null);
-
-            }
-            return callback(null, data);
-
-        });
-
-    } catch (err) {
-
-        error('Error creating the queue SQS %s', err.message);
-        return callback(err, null);
-
-    }
-
-};
-
 const sendMessage = (messaje, queueUrl, callback) => {
 
     try {
@@ -134,6 +102,5 @@ const sendBatch = (messages, queueUrl, callback) => {
 };
 
 module.exports = {
-    createQueue,
     sendBatch
 };
