@@ -1,0 +1,45 @@
+# serverless.yml
+
+service: lambdaimports
+
+plugins:
+ - serverless-external-s3-event
+
+provider:
+  name: aws
+  stage: dev
+  region: us-east-1
+  role: arn:aws:iam::084187035577:role/serverlessadmin
+  runtime: nodejs6.10
+  timeout: 300
+  environment:
+    AWS_BUCKET: envistasecure
+    AWS_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/084187035577/importsqueue
+
+# Functions declaration
+functions:
+  producerImports:
+    handler: src/producer/handler.producer
+    description: read imports from s3 csv file.
+    environment:
+      AWS_S3_BUCKET: ${self:provider.environment.AWS_BUCKET}
+      AWS_QUEUE_URL: ${self:provider.environment.AWS_QUEUE_URL}
+    events:
+      - existingS3:
+          bucket: ${self:provider.environment.AWS_BUCKET}
+          events:
+            - s3:ObjectCreated:*
+          rules:
+            #- prefix: 
+            - suffix: .csv
+
+# Events Lambda invoke permissions.
+resources:
+  Resources:
+    LambdaInvokePermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+          Action: lambda:InvokeFunction
+          FunctionName: ${self:service}-${self:provider.stage}-producerImports
+          Principal: s3.amazonaws.com
+          SourceArn: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}

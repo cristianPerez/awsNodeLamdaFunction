@@ -4,7 +4,8 @@
   "description": "there are three functions for work with imports project, and Amazon SQS, 1) lambda producer, 2) lambda consumer, 3) lambda worker for save in the db.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "serverless deploy -v"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,11 @@
   "homepage": "https://gitlab.com/cperez354/node-imports-lambda#README",
   "dependencies": {
     "@enspire/eslint-config-enspire": "^1.1.1",
+    "async": "^2.6.0",
     "aws-sdk": "^2.174.0",
+    "csv-parse": "^2.0.0",
     "eslint": "^4.13.1",
-    "serverless": "^1.25.0"
+    "serverless": "^1.25.0",
+    "serverless-external-s3-event": "^1.0.9"
   }
 }
