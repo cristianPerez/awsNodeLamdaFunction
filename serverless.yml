@@ -12,6 +12,8 @@ provider:
   role: arn:aws:iam::084187035577:role/serverlessadmin
   runtime: nodejs6.10
   timeout: 300
+  deploymentBucket:
+    name: ${self:service}-${self:provider.stage}-deploy
   environment:
     AWS_BUCKET: envistasecure
     AWS_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/084187035577/importsqueue
