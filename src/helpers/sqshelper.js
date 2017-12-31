@@ -21,9 +21,6 @@ const sendMessage = (messaje, queueUrl, callback) => {
             if (err) {
 
                 error('Error sending a message: %s', err.message);
-                /**
-                 * What happen if the message hasn't sent.
-                 */
                 return callback(err, null);
 
             }
@@ -46,19 +43,15 @@ const sendBatch = (messages, queueUrl, callback) => {
 
         let rightMessage = [];
         let errorsMessages = [];
-        let page = 0;
-        let nextPage = messages.length;
 
         whilst(() => {
 
-            //return messages.length > 0;
-            return page < nextPage;
+            return messages.length > 0;
 
         },
         (next) => {
 
-            //let auxiliarArray = messages.splice(0, 100);
-            let auxiliarArray = messages.slice(page, 100);
+            let auxiliarArray = messages.splice(0, 100);
 
             sendMessage(JSON.stringify(auxiliarArray), queueUrl, (err, data) => {
 
@@ -70,7 +63,6 @@ const sendBatch = (messages, queueUrl, callback) => {
                 }
                 log('Message sent mesageId: %s', data.MessageId);
                 rightMessage.push({ message: auxiliarArray, answer: data });
-                page = page + 100;
                 next();
 
             });
