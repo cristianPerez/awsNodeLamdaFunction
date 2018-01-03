@@ -27,6 +27,7 @@
     "csv-parse": "^2.0.0",
     "eslint": "^4.13.1",
     "serverless": "^1.25.0",
-    "serverless-external-s3-event": "^1.0.9"
+    "serverless-external-s3-event": "^1.0.9",
+    "uuid": "^3.1.0"
   }
 }

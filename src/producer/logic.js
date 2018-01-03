@@ -5,6 +5,8 @@
 
 'use strict';
 
+const uuidv1 = require('uuid/v1');
+
 const sqsHelper = require('../helpers/sqshelper');
 const { getS3Data } = require('../helpers/s3helper');
 const { log, error } = console;
@@ -20,6 +22,7 @@ exports.importData = (body, callback) => {
 
     try {
 
+        let uuidProcess = uuidv1();
         log(`Ready for send messages to ::: ${urlQueue}`);
 
         getS3Data(body, urlQueue, (err, data) => {
@@ -32,7 +35,7 @@ exports.importData = (body, callback) => {
             }
             let metaData = data;
             log(`METADATA :: ${metaData.messages.length}`);
-            sqsHelper.sendBatch(metaData.messages, urlQueue, (err, data) => {
+            sqsHelper.sendBatch(uuidProcess, metaData.messages, urlQueue, (err, data) => {
 
                 if (err) {
 

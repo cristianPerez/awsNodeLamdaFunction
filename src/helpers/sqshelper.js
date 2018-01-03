@@ -37,7 +37,7 @@ const sendMessage = (messaje, queueUrl, callback) => {
 
 };
 
-const sendBatch = (messages, queueUrl, callback) => {
+const sendBatch = (uuid, messages, queueUrl, callback) => {
 
     try {
 
@@ -52,8 +52,11 @@ const sendBatch = (messages, queueUrl, callback) => {
         (next) => {
 
             let auxiliarArray = messages.splice(0, 100);
-
-            sendMessage(JSON.stringify(auxiliarArray), queueUrl, (err, data) => {
+            let auxObj = {
+                rows: auxiliarArray,
+                uuid
+            };
+            sendMessage(JSON.stringify(auxObj), queueUrl, (err, data) => {
 
                 if (err) {
 
