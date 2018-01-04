@@ -11,9 +11,10 @@ const sendMessage = (messaje, queueUrl, callback) => {
     try {
 
         var params = {
-            MessageBody: messaje,
+            MessageBody: JSON.stringify(messaje),
             QueueUrl: queueUrl,
-            DelaySeconds: 0
+            DelaySeconds: 0,
+            MessageGroupId: messaje.uuid
         };
 
         sqs.sendMessage(params, (err, data) => {
@@ -56,7 +57,7 @@ const sendBatch = (uuid, messages, queueUrl, callback) => {
                 rows: auxiliarArray,
                 uuid
             };
-            sendMessage(JSON.stringify(auxObj), queueUrl, (err, data) => {
+            sendMessage(auxObj, queueUrl, (err, data) => {
 
                 if (err) {
 

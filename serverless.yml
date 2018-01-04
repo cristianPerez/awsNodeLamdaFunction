@@ -1,9 +1,9 @@
 # serverless.yml
 
-service: sls-import-functions
+service: sls-import
 
-#plugins:
-# - serverless-external-s3-event
+plugins:
+ - serverless-external-s3-event
 
 provider:
   name: aws
@@ -13,7 +13,7 @@ provider:
   runtime: nodejs6.10
   timeout: 300
   deploymentBucket:
-    name: ${self:service}-deploy-${self:provider.stage}
+    name: ${self:service}-${self:provider.stage}-deploy
   environment:
     AWS_BUCKET: envistaplatform-dev
     AWS_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/326806802576/imports.fifo
@@ -26,22 +26,22 @@ functions:
     environment:
       AWS_S3_BUCKET: ${self:provider.environment.AWS_BUCKET}
       AWS_QUEUE_URL: ${self:provider.environment.AWS_QUEUE_URL}
-#    events:
-#      - existingS3:
-#          bucket: ${self:provider.environment.AWS_BUCKET}
-#          events:
-#            - s3:ObjectCreated:*
-#          rules:
-#            #- prefix: 
-#            - suffix: .csv
+    events:
+      - existingS3:
+          bucket: ${self:provider.environment.AWS_BUCKET}
+          events:
+            - s3:ObjectCreated:*
+          rules:
+            #- prefix: 
+            - suffix: .csv
 
 # Events Lambda invoke permissions.
-#resources:
-#  Resources:
-#    LambdaInvokePermission:
-#      Type: AWS::Lambda::Permission
-#      Properties:
-#          Action: lambda:InvokeFunction
-#          FunctionName: ${self:service}-${self:provider.stage}-producerImports
-#          Principal: s3.amazonaws.com
-#          SourceArn: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}
+resources:
+  Resources:
+    LambdaInvokePermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+          Action: lambda:InvokeFunction
+          FunctionName: ${self:service}-${self:provider.stage}-producerImports
+          Principal: s3.amazonaws.com
+          SourceArn: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}
