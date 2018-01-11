@@ -6,14 +6,7 @@ const { log, error } = console;
 const { productsSchema, importStatusSchema } = require('./schema');
 const uuidv1 = require('uuid/v1');
 
-const dynamoInstance = new aws.DynamoDB(
-    {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_REGION,
-        endpoint: process.env.DYNAMO_URL
-    }
-);
+const dynamoInstance = new aws.DynamoDB();
 
 const createTable = (tableName, schema, callback) => {
 
@@ -256,5 +249,6 @@ const saveData = (table, body, callback) => {
 };
 
 module.exports = {
-    saveData
+    saveData,
+    createTable
 };
