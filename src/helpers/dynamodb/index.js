@@ -13,7 +13,6 @@ const createTable = (tableName, schema, callback) => {
     try {
 
         schema.TableName = tableName;
-        log(`SHEMMA::: ${JSON.stringify(schema)}`);
         dynamoInstance.createTable(schema, (err, data) => {
 
             if (err) {
