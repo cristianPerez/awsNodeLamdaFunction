@@ -42,7 +42,7 @@ exports.importData = (body, callback) => {
 
                 if (err) {
 
-                    error('Eror creating a products table on dynamo %s', err.message);
+                    error('Error saving info process on dynamo %s', err.message);
                     return callback(err, null);
 
                 }
