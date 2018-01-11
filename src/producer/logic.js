@@ -9,8 +9,7 @@ const uuidv1 = require('uuid/v1');
 
 const sqsHelper = require('../helpers/sqs');
 const { getS3Data } = require('../helpers/s3');
-const { createTable } = require('../helpers/dynamodb');
-const { processSchema } = require('../helpers/dynamodb/schema');
+const { saveInfoProcess } = require('../helpers/dynamodb');
 const { log, error } = console;
 const urlQueue = process.env.AWS_QUEUE_URL;
 const tableName = `process-${process.env.CUSTOMER_NAME}`;
@@ -39,7 +38,7 @@ exports.importData = (body, callback) => {
             let metaData = data;
             log(`METADATA :: ${metaData.messages.length}`);
 
-            createTable(tableName, processSchema, (err, data) => {
+            saveInfoProcess(tableName, uuidProcess, (err, data) => {
 
                 if (err) {
 

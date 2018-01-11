@@ -13,6 +13,7 @@ const createTable = (tableName, schema, callback) => {
     try {
 
         schema.TableName = tableName;
+        log(`SHEMMA::: ${JSON.stringify(schema)}`);
         dynamoInstance.createTable(schema, (err, data) => {
 
             if (err) {
@@ -107,15 +108,11 @@ const saveInfoProcess = (tableImportProcess, uuid, callback) => {
                 }
 
                 log(`Table ${tableImportProcess} created : ${data}`);
-                aws.config.update({
-                    region: process.env.AWS_REGION,
-                    endpoint: process.env.DYNAMO_URL
-                });
 
                 const docClient = new aws.DynamoDB.DocumentClient();
                 const infoProcess = {
                     uuid,
-                    status: 'Finish',
+                    status: 'Processing',
                     doneprocess: 0,
                     numbererrors: 0,
                     errors: [],
@@ -250,5 +247,5 @@ const saveData = (table, body, callback) => {
 
 module.exports = {
     saveData,
-    createTable
+    saveInfoProcess
 };
