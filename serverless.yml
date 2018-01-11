@@ -27,6 +27,7 @@ functions:
     environment:
       AWS_S3_BUCKET: ${self:provider.environment.AWS_BUCKET}
       AWS_QUEUE_URL: ${self:provider.environment.AWS_QUEUE_URL}
+      CUSTOMER_NAME: ${self:provider.environment.CUSTOMER_NAME}
     events:
       - existingS3:
           bucket: ${self:provider.environment.AWS_BUCKET}
