@@ -7,10 +7,13 @@
 
 const uuidv1 = require('uuid/v1');
 
-const sqsHelper = require('../helpers/sqshelper');
-const { getS3Data } = require('../helpers/s3helper');
+const sqsHelper = require('../helpers/sqs');
+const { getS3Data } = require('../helpers/s3');
+const { createTable } = require('../helpers/dynamodb');
+const { processSchema } = require('../helpers/dynamodb/schema');
 const { log, error } = console;
 const urlQueue = process.env.AWS_QUEUE_URL;
+const tableName = `process-${process.env.CUSTOMER_NAME}`;
 
 /**
  * Create a sqs id it doesn't exist after import data from s3 csv file and send the messages to the sqs.
@@ -22,7 +25,7 @@ exports.importData = (body, callback) => {
 
     try {
 
-        let uuidProcess = uuidv1();
+        const uuidProcess = uuidv1();
         log(`Ready for send messages to ::: ${urlQueue}`);
 
         getS3Data(body, urlQueue, (err, data) => {
@@ -35,19 +38,32 @@ exports.importData = (body, callback) => {
             }
             let metaData = data;
             log(`METADATA :: ${metaData.messages.length}`);
-            sqsHelper.sendBatch(uuidProcess, metaData.messages, urlQueue, (err, data) => {
+
+            createTable(tableName, processSchema, (err, data) => {
 
                 if (err) {
 
-                    error('Error sending messages to sqs %s', err.message);
+                    error('Eror creating a products table on dynamo %s', err.message);
                     return callback(err, null);
 
                 }
-                metaData.messages = {
-                    successful: data.rightMessage.length,
-                    failed: data.errorsMessages.length
-                };
-                return callback(null, metaData);
+                log(`The table was created successful : ${data}`);
+
+                sqsHelper.sendBatch(uuidProcess, metaData.messages, urlQueue, (err, data) => {
+
+                    if (err) {
+
+                        error('Error sending messages to sqs %s', err.message);
+                        return callback(err, null);
+
+                    }
+                    metaData.messages = {
+                        successful: data.rightMessage.length,
+                        failed: data.errorsMessages.length
+                    };
+                    return callback(null, metaData);
+
+                });
 
             });
 

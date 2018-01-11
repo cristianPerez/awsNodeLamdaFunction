@@ -17,6 +17,7 @@ provider:
   environment:
     AWS_BUCKET: envistaplatform-dev
     AWS_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/326806802576/imports.fifo
+    CUSTOMER_NAME: envwine
 
 # Functions declaration
 functions:
