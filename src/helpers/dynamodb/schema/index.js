@@ -19,7 +19,7 @@ exports.productsSchema = {
     }
 };
 
-exports.importStatusSchema = {
+exports.importSChema = {
     KeySchema: [
         {
             AttributeName: 'uuid',

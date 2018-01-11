@@ -12,7 +12,7 @@ const { getS3Data } = require('../helpers/s3');
 const { saveInfoProcess } = require('../helpers/dynamodb');
 const { log, error } = console;
 const urlQueue = process.env.AWS_QUEUE_URL;
-const tableName = `process-${process.env.CUSTOMER_NAME}`;
+const tableName = `import-process-${process.env.CUSTOMER_NAME}`;
 
 /**
  * Create a sqs id it doesn't exist after import data from s3 csv file and send the messages to the sqs.

@@ -3,8 +3,9 @@
 const aws = require('aws-sdk');
 const { mapSeries } = require('async');
 const { log, error } = console;
-const { productsSchema, importStatusSchema } = require('./schema');
+const { productsSchema, importSChema } = require('./schema');
 const uuidv1 = require('uuid/v1');
+const tableErrorsName = `import-errors-${process.env.CUSTOMER_NAME}`;
 
 const dynamoInstance = new aws.DynamoDB();
 
@@ -85,7 +86,7 @@ const saveInfoProcess = (tableImportProcess, uuid, callback) => {
 
     try {
 
-        createTable(tableImportProcess, importStatusSchema, (err, data) => {
+        createTable(tableImportProcess, importSChema, (err, data) => {
 
             if (err) {
 
@@ -95,6 +96,18 @@ const saveInfoProcess = (tableImportProcess, uuid, callback) => {
             }
 
             log(`Creating table in process waiting for the table exist: ${data}`);
+
+            createTable(tableErrorsName, importSChema, (err, data) => {
+
+                if (err) {
+
+                    error(`Error creating a table errors: ${err.message}`);
+
+                }
+                log(`Table errors was created ${data}`);
+
+            });
+
             dynamoInstance.waitFor('tableExists', {
                 TableName: tableImportProcess
             }, (err, data) => {
