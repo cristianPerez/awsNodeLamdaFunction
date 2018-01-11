@@ -55,7 +55,7 @@ const sendBatch = (uuid, messages, queueUrl, callback) => {
             let auxiliarArray = messages.splice(0, 100);
             let auxObj = {
                 rows: auxiliarArray,
-                uuid
+                uuid: messages.length === 0 ? uuid : undefined
             };
             sendMessage(auxObj, queueUrl, (err, data) => {
 
