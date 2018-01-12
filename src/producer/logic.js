@@ -25,7 +25,7 @@ exports.importData = (body, callback) => {
     try {
 
         const uuidProcess = uuidv1();
-        log(`Ready for send messages to ::: ${urlQueue}`);
+        log('Ready for send messages to %s ', urlQueue);
 
         getS3Data(body, urlQueue, (err, data) => {
 
@@ -36,9 +36,6 @@ exports.importData = (body, callback) => {
 
             }
             let metaData = data;
-            log(`METADATA :: ${metaData.messages.length}`);
-            log(`DATA ::: ${JSON.stringify(metaData)}`);
-
             saveInfoProcess(tableName, uuidProcess, (err, data) => {
 
                 if (err) {
@@ -47,7 +44,7 @@ exports.importData = (body, callback) => {
                     return callback(err, null);
 
                 }
-                log(`The table was created successful : ${data}`);
+                log('The table was created successful : %s', JSON.stringify(data));
 
                 sqsHelper.sendBatch(uuidProcess, metaData.messages, urlQueue, (err, data) => {
 

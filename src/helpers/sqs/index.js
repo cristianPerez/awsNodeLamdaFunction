@@ -1,10 +1,11 @@
 'use strict';
 
 const aws = require('aws-sdk');
-const sqs = new aws.SQS();
 const { whilst } = require('async');
 
+const sqs = new aws.SQS();
 const { log, error } = console;
+const customerName = process.env.CUSTOMER_NAME;
 
 const sendMessage = (mesagge, queueUrl, callback) => {
 
@@ -25,7 +26,7 @@ const sendMessage = (mesagge, queueUrl, callback) => {
                 return callback(err, null);
 
             }
-            log(`Message already sent : ${data}`);
+            log('Mesagge already sent : %s', JSON.stringify(data));
             callback(null, data);
 
         });
@@ -56,8 +57,9 @@ const sendBatch = (uuid, messages, queueUrl, callback) => {
             let auxiliarArray = messages.splice(0, 100);
             let auxObj = {
                 uuid,
+                customerName,
                 rows: auxiliarArray,
-                last: messages.length === 0 ? true : false
+                last: messages.length === 0
             };
             sendMessage(auxObj, queueUrl, (err, data) => {
 

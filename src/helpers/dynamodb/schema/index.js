@@ -1,24 +1,5 @@
 'use strict';
 
-exports.productsSchema = {
-    KeySchema: [
-        {
-            AttributeName: 'sequence',
-            KeyType: 'HASH'
-        }
-    ],
-    AttributeDefinitions: [
-        {
-            AttributeName: 'sequence',
-            AttributeType: 'S'
-        }
-    ],
-    ProvisionedThroughput: {
-        ReadCapacityUnits: 1,
-        WriteCapacityUnits: 1
-    }
-};
-
 exports.importSChema = {
     KeySchema: [
         {
