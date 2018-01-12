@@ -27,7 +27,7 @@ exports.getS3Data = (body, urlQueue, callback) => {
         }
     };
 
-    const parser = parse({ delimiter: ';', columns: true }, (err, data) => {
+    const parser = parse({ delimiter: ',', columns: true }, (err, data) => {
 
         if (err) {
 
