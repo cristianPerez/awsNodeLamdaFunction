@@ -6,15 +6,15 @@ const { whilst } = require('async');
 
 const { log, error } = console;
 
-const sendMessage = (messaje, queueUrl, callback) => {
+const sendMessage = (mesagge, queueUrl, callback) => {
 
     try {
 
         var params = {
-            MessageBody: JSON.stringify(messaje),
+            MessageBody: JSON.stringify(mesagge),
             QueueUrl: queueUrl,
             DelaySeconds: 0,
-            MessageGroupId: messaje.uuid
+            MessageGroupId: mesagge.uuid
         };
 
         sqs.sendMessage(params, (err, data) => {
@@ -25,6 +25,7 @@ const sendMessage = (messaje, queueUrl, callback) => {
                 return callback(err, null);
 
             }
+            log(`Message already sent : ${data}`);
             callback(null, data);
 
         });
