@@ -1,6 +1,6 @@
 # serverless.yml
 
-service: sls-import-functions
+service: sls-import
 
 plugins:
  - serverless-external-s3-event

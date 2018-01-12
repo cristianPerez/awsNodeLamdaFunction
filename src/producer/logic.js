@@ -37,6 +37,7 @@ exports.importData = (body, callback) => {
             }
             let metaData = data;
             log(`METADATA :: ${metaData.messages.length}`);
+            log(`DATA ::: ${JSON.stringify(metaData)}`);
 
             saveInfoProcess(tableName, uuidProcess, (err, data) => {
 
