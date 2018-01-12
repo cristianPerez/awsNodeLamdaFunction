@@ -7,6 +7,12 @@ const sqs = new aws.SQS();
 const { log, error } = console;
 const customerName = process.env.CUSTOMER_NAME;
 
+/**
+ * Method using for send one message to sqs.
+ * @param {parameter} mesagge - Batch of messages from the csv file.
+ * @param {parameter} queueUrl - Url of the sqs QUEUE FIFO on aws.
+ * @param {parameter} callback - return the callback process.
+ */
 const sendMessage = (mesagge, queueUrl, callback) => {
 
     try {
@@ -40,6 +46,13 @@ const sendMessage = (mesagge, queueUrl, callback) => {
 
 };
 
+/**
+ * Method using for send an array of messages to sqs.
+ * @param {parameter} uuid - id of the process.
+ * @param {parameter} messages - array of messages for send.
+ * @param {parameter} queueUrl - Url of the sqs QUEUE FIFO on aws.
+ * @param {parameter} callback - return the callback process.
+ */
 const sendBatch = (uuid, messages, queueUrl, callback) => {
 
     try {

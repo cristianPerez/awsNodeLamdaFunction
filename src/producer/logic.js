@@ -15,11 +15,10 @@ const urlQueue = process.env.AWS_QUEUE_URL;
 const tableName = `import-process-${process.env.CUSTOMER_NAME}`;
 
 /**
- * Create a sqs id it doesn't exist after import data from s3 csv file and send the messages to the sqs.
+ * Send all messages to sqs after import data from s3 csv file and send the messages to the sqs.
  * @param {parameter} body - Request body.
  * @param {parameter} callback - return the process.
  */
-
 exports.importData = (body, callback) => {
 
     try {

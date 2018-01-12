@@ -1,12 +1,9 @@
 'use strict';
 
 const aws = require('aws-sdk');
-/**
- * csv module for process the file.
- */
 const parse = require('csv-parse');
-const s3 = new aws.S3();
 
+const s3 = new aws.S3();
 const { error } = console;
 
 /**

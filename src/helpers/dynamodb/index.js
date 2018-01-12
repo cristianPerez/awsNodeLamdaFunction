@@ -8,6 +8,12 @@ const tableErrorsName = `import-errors-${process.env.CUSTOMER_NAME}`;
 
 const dynamoInstance = new aws.DynamoDB();
 
+/**
+ * Method for create a table in dynamoDB.
+ * @param {parameter} tableName - Name of the table that is going to be created.
+ * @param {parameter} schema - structure for validate de schema.
+ * @param {parameter} callback - return the callback process.
+ */
 const createTable = (tableName, schema, callback) => {
 
     try {
@@ -43,6 +49,12 @@ const createTable = (tableName, schema, callback) => {
 
 };
 
+/**
+ * Method save the first information of the process on dynamoDB.
+ * @param {parameter} tableImportProcess - Name of the table where the information is going to be saved.
+ * @param {parameter} uuid - id of process.
+ * @param {parameter} callback - return the callback process.
+ */
 const saveInfoProcess = (tableImportProcess, uuid, callback) => {
 
     try {
