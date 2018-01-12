@@ -1,47 +1,37 @@
-# node-imports-service
+# sls-import-functions
 
 ## Install
 
-- Install dependencies: `npm install`
-
-## Configuration
-* Create file with name `.env` and save it in the root of the project `.env` with content:
+- Install dependencies:
+```bash
+npm install
+```
+- Install serverless globally using next command.
 
 ```bash
-#
-## APP
-#
-HOST=0.0.0.0
-PORT=9090
-NODE_ENV=development
-
-#
-## AWS **ALL REQUIRED**
-#
-DYNAMO_URL=Could be remote or http://localhost:8000
-AWS_REGION=Example -- us-east-1
-AWS_ACCESS_KEY_ID=AWS ACCESS KEY ID HERE
-AWS_SECRET_ACCESS_KEY=AWS SECRET KEY ID HERE
-AWS_S3_BUCKET=NAME OF THE BUCKET EXAMPLE envista
-EVENT_SERVICE_URL=http://localhost:9999
-CUSTOMER_NAME=envwine
-
+npm i -g serverless
 ```
 
-* CSV File example public
+## Configuration
 
-https://s3.amazonaws.com/envista/example-imports.csv
+- For configurate your local environment use the next command and replace the xxxxxx with your AWS credentials.
 
-## Usage
+```bash
+serverless config credentials --provider aws --key xxxxxxxx --secret xxxxxxxxxx
+```
 
-## Debug
+## Preparing
 
-### Create a new micro-service
+- For check that you have your credentials you can do the next command:
 
-## API
+```bash
+cat ~/.aws/credentials
+```
 
 ## Deploy
 
-- Run that command: `serverless deploy -v`
+- Run that command: 
 
-## Contribute
+```bash
+sls deploy -v
+```
