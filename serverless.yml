@@ -15,9 +15,9 @@ provider:
   deploymentBucket:
     name: ${self:service}-${self:provider.stage}-deploy
   environment:
-    AWS_BUCKET: envistaplatform-dev
-    AWS_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/326806802576/imports.fifo
-    CUSTOMER_NAME: envwine
+    AWS_BUCKET: xxxHEREBUCKETNAMExxx
+    AWS_QUEUE_URL: xxxHERESQSURLxxx
+    CUSTOMER_NAME: xxxHERECUSTOMERNAMExxx
 
 # Functions declaration
 functions:
