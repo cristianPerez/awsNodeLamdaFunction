@@ -1,4 +1,4 @@
-# sls-import-functions
+# AWS-NODE-LAMBDA-FUNCTION
 
 ## Install
 
